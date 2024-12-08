@@ -22,6 +22,9 @@ class StringCalculator < ApplicationRecord
     # Split the input string by the delimiter and convert to integers
     nums = numbers.split(Regexp.new(delimiter)).map(&:to_i)
 
+    # Remove numbers greater than 1000
+    nums = nums.reject { |num| num > 1000 }
+
     # Check for negative numbers
     negatives = nums.select(&:negative?)
     
