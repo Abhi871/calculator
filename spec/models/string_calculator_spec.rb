@@ -44,14 +44,33 @@ RSpec.describe StringCalculator, type: :model do
       expect(StringCalculator.add("//[###]\n4###5###6")).to eq(15)
     end
 
+    it "handles delimiters of variable lengths with new lines" do
+      expect(StringCalculator.add("//[***]\n1***2***3\n4\n5")).to eq(15)
+      expect(StringCalculator.add("//[###]\n4###7\n5###6")).to eq(22)
+    end
+
     it "handles multiple single-character delimiters" do
       expect(StringCalculator.add("//[*][%]\n1*2%3")).to eq(6)
       expect(StringCalculator.add("//[$][#]\n4$5#6")).to eq(15)
     end
 
+    it "handles _ as character" do
+      expect(StringCalculator.add("1,_2,3,_4")).to eq(10)
+    end
+
+    it "handles multiple single-character delimiters with multiple new lines" do
+      expect(StringCalculator.add("//[*][%]\n1*2%3\n4\n5")).to eq(15)
+      expect(StringCalculator.add("//[$][#]\n4$5\n7#6\n8")).to eq(30)
+    end
+
     it "handles multiple delimiters with lengths longer than one character" do
       expect(StringCalculator.add("//[***][%%%]\n1***2%%%3")).to eq(6)
       expect(StringCalculator.add("//[##][$$$]\n4##5$$$6")).to eq(15)
+    end
+
+    it "handles multiple delimiters with lengths longer than one character with multiple new lines" do
+      expect(StringCalculator.add("//[***][%%%]\n1***2%%%3\n4\n5")).to eq(15)
+      expect(StringCalculator.add("//[##][$$$]\n4##5\n7$$$6\n8")).to eq(30)
     end
   end
 end
