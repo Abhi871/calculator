@@ -38,5 +38,20 @@ RSpec.describe StringCalculator, type: :model do
       expect(StringCalculator.add("2,1001")).to eq(2)
       expect(StringCalculator.add("1000,1,2000")).to eq(1001)
     end
+
+    it "handles delimiters of variable lengths" do
+      expect(StringCalculator.add("//[***]\n1***2***3")).to eq(6)
+      expect(StringCalculator.add("//[###]\n4###5###6")).to eq(15)
+    end
+
+    it "handles multiple single-character delimiters" do
+      expect(StringCalculator.add("//[*][%]\n1*2%3")).to eq(6)
+      expect(StringCalculator.add("//[$][#]\n4$5#6")).to eq(15)
+    end
+
+    it "handles multiple delimiters with lengths longer than one character" do
+      expect(StringCalculator.add("//[***][%%%]\n1***2%%%3")).to eq(6)
+      expect(StringCalculator.add("//[##][$$$]\n4##5$$$6")).to eq(15)
+    end
   end
 end
